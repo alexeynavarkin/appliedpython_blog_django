@@ -20,6 +20,7 @@ from blog import views
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='post-list'),
+    path('user/<int:pk>', views.UserView.as_view(), name='user-view'),
     path('post/create', views.CreatePost.as_view(), name='post-create'),
     path('post/<int:post_pk>/comment_add', views.CreateComment.as_view()),
     path('post/<int:pk>', views.PostView.as_view(), name='post-view'),

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.views import generic
 from django.core.paginator import Paginator
 from blog.models import Post
@@ -35,13 +36,15 @@ class PostView(generic.DetailView):
         return obj
 
     def comments_list(self):
-        paginator = Paginator(self.object.comment_set.all(), 10)
+        comments = self.object.comment_set.all().order_by('date')
+        paginator = Paginator(comments, 10)
         page = self.request.GET.get('page')
         return paginator.get_page(page)
 
     def get_context_data(self, **kwargs):
-        context = super(PostView, self).get_context_data(**kwargs)
-        context['comment_add_url'] = '/post/{}/comment_add'.format(context['post'].id)
+        context = super().get_context_data(**kwargs)
+        context['comment_add_url'] = '/post/{}/comment_add'\
+            .format(context['post'].id)
         context['comments'] = self.comments_list
         return context
 
@@ -70,3 +73,14 @@ class CreateComment(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class UserView(LoginRequiredMixin, generic.DetailView):
+    model = User
+    template_name = 'user_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = self.object.post_set.all()
+        context['comments'] = self.object.comment_set.all()
+        return context

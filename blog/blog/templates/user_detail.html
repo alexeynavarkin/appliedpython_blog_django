@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ user }}
+<h4>Посты</h4>
+{% for post in posts %}
+    <p>{{ post }}</p>
+{% endfor %}
+<h4>Комментарии</h4>
+{% for comment in comments %}
+    <p>{{ comment }}</p>
+{% endfor %}
+{% endblock %}
