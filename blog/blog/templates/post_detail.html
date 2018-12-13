@@ -4,4 +4,33 @@
     <h3>{{ post.title }}</h3>
     <p>{{ post.text }}</p>
     <p>{{ post.date }}</p>
+    <p>{{ post.views }}</p>
+    <a class="btn btn-primary" href="{{ comment_add_url }}">Добавить комментарий</a>
+    <hr>
+    {% for comment in comments %}
+        <div>
+            <p>{{ comment.user }}</p>
+            <p>{{ comment.text }}</p>
+            <p>{{ comment.date }}</p>
+            <hr>
+        </div>
+    {% endfor %}
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if comments.has_previous %}
+            <a href="?page=1">&laquo; перв.</a>
+            <a href="?page={{ commnets.previous_page_number }}">след.</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ comments.number }} из {{ comments.paginator.num_pages }}.
+        </span>
+
+        {% if comments.has_next %}
+            <a href="?page={{ comments.next_page_number }}">пред.</a>
+            <a href="?page={{ comments.paginator.num_pages }}">послед. &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
 {% endblock %}

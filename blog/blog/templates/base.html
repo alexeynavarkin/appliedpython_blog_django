@@ -11,33 +11,49 @@
     <title>Блог</title>
   </head>
   <body>
-    {% if user.is_authenticated %}
-      <li>User: {{ user.get_username }}</li>
-      <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>   
-    {% else %}
-      <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>   
-    {% endif %}
-
-    {% block content %}
-    {% endblock %}
-
-    {% block pagination %}
-      {% if is_paginated %}
-        <div class="pagination">
-          <span class="page-links">
-            {% if page_obj.has_previous %}
-              <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+    <div class="container">
+      <nav class="navbar navbar-dark bg-dark rounded-bottom shadow">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Список постов</a>
+          </li>
+        </ul>
+        <div class="float-right">
+            {% if user.is_authenticated %}
+              <div class="dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="userDopdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.get_username }}</a>
+                <div class="dropdown-menu" aria-labelledby="userDopdown">
+                  <a href="{% url 'post-create' %}" class="dropdown-item">Создать пост</a>
+                  <a href="{% url 'logout' %}?next={{ request.path }}" class="dropdown-item text-danger">Выйти</a>
+                </div>
+              </div>
+            {% else %}
+              <a class="nav-link" href="{% url 'login' %}">Войти</a>
             {% endif %}
-            <span class="page-current">
-              <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</p>
+          </div>
+      </nav>
+
+      {% block content %}
+      {% endblock %}
+
+      {% block pagination %}
+        {% if is_paginated %}
+          <div class="pagination">
+            <span class="page-links">
+              {% if page_obj.has_previous %}
+                <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+              {% endif %}
+              <span class="page-current">
+                <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</p>
+              </span>
+              {% if page_obj.has_next %}
+                <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+              {% endif %}
             </span>
-            {% if page_obj.has_next %}
-              <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-            {% endif %}
-          </span>
-        </div>
-      {% endif %}
-    {% endblock %}
+          </div>
+        {% endif %}
+      {% endblock %}
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

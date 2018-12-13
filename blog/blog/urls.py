@@ -20,7 +20,9 @@ from blog import views
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='post-list'),
+    path('post/create', views.CreatePost.as_view(), name='post-create'),
+    path('post/<int:post_pk>/comment_add', views.CreateComment.as_view()),
     path('post/<int:pk>', views.PostView.as_view(), name='post-view'),
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')), #TODO: define templates for reset forms
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

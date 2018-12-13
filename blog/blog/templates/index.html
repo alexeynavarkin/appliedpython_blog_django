@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Список постов</h2>
-
-<ul>
-    {% for post in posts %}
-        <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>    
-    {% endfor %}
-</ul>
+<h2 class="text-center mt-4">Список постов</h2>
+<a href="?views=asc">По просмотрам&uarr;</a> | <a href="?views=desc">По просмотрам&darr;</a> | <a href="?date=asc">По дате&uarr;</a> | <a href="?date=desc">По дате&darr;</a>
+{% for post in posts %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>{{ post.title }}</h5>
+        <hr>
+        <p class="card-text">{{ post.text }}</p>
+        <a href="{{ post.get_absolute_url }}">Просмотреть полностью</a>
+    </div>
+    <div class="card-footer text-muted">
+            {{ post.date }} Просмотры: {{ post.views }}
+    </div>
+</div>
+{% endfor %}
 
 {% endblock %}
